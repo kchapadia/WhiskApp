@@ -3,12 +3,12 @@ import MainScreen from "../../components/MainScreen";
 import axios from "axios";
 import { Button, Card, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteNoteAction, updateNoteAction } from "../../actions/notesActions";
+import { deleteRecipeAction, updateRecipeAction } from "../../actions/recipesActions";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
 import ReactMarkdown from "react-markdown";
 
-function SingleNote({ match, history }) {
+function SingleRecipe({ match, history }) {
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const [category, setCategory] = useState();
@@ -16,22 +16,22 @@ function SingleNote({ match, history }) {
 
   const dispatch = useDispatch();
 
-  const noteUpdate = useSelector((state) => state.noteUpdate);
-  const { loading, error } = noteUpdate;
+  const recipeUpdate = useSelector((state) => state.recipeUpdate);
+  const { loading, error } = recipeUpdate;
 
-  const noteDelete = useSelector((state) => state.noteDelete);
-  const { loading: loadingDelete, error: errorDelete } = noteDelete;
+  const recipeDelete = useSelector((state) => state.recipeDelete);
+  const { loading: loadingDelete, error: errorDelete } = recipeDelete;
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
-      dispatch(deleteNoteAction(id));
+      dispatch(deleteRecipeAction(id));
     }
-    history.push("/mynotes");
+    history.push("/myrecipes");
   };
 
   useEffect(() => {
     const fetching = async () => {
-      const { data } = await axios.get(`/api/notes/${match.params.id}`);
+      const { data } = await axios.get(`/api/recipes/${match.params.id}`);
 
       setTitle(data.title);
       setContent(data.content);
@@ -50,17 +50,17 @@ function SingleNote({ match, history }) {
 
   const updateHandler = (e) => {
     e.preventDefault();
-    dispatch(updateNoteAction(match.params.id, title, content, category));
+    dispatch(updateRecipeAction(match.params.id, title, content, category));
     if (!title || !content || !category) return;
 
     resetHandler();
-    history.push("/mynotes");
+    history.push("/myrecipes");
   };
 
   return (
-    <MainScreen title="Edit Note">
+    <MainScreen title="Edit Recipe">
       <Card>
-        <Card.Header>Edit your Note</Card.Header>
+        <Card.Header>Edit your Recipe</Card.Header>
         <Card.Body>
           <Form onSubmit={updateHandler}>
             {loadingDelete && <Loading />}
@@ -90,7 +90,7 @@ function SingleNote({ match, history }) {
             </Form.Group>
             {content && (
               <Card>
-                <Card.Header>Note Preview</Card.Header>
+                <Card.Header>Recipe Preview</Card.Header>
                 <Card.Body>
                   <ReactMarkdown>{content}</ReactMarkdown>
                 </Card.Body>
@@ -108,14 +108,14 @@ function SingleNote({ match, history }) {
             </Form.Group>
             {loading && <Loading size={50} />}
             <Button variant="primary" type="submit">
-              Update Note
+              Update Recipe
             </Button>
             <Button
               className="mx-2"
               variant="danger"
               onClick={() => deleteHandler(match.params.id)}
             >
-              Delete Note
+              Delete Recipe
             </Button>
           </Form>
         </Card.Body>
@@ -128,4 +128,4 @@ function SingleNote({ match, history }) {
   );
 }
 
-export default SingleNote;
+export default SingleRecipe;

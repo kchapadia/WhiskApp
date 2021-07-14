@@ -1,5 +1,5 @@
 {
-  "name": "notezipper",
+  "name": "Whisk",
   "version": "1.0.0",
   "description": "Notes Taking App",
   "main": "server.js",
@@ -12,7 +12,7 @@
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },
-  "author": "Piyush Agarwal",
+  "author": "Group 8",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

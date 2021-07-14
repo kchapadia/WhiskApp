@@ -2,22 +2,22 @@ import React, { useEffect, useState } from "react";
 import MainScreen from "../../components/MainScreen";
 import { Button, Card, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { createNoteAction } from "../../actions/notesActions";
+import { createRecipeAction } from "../../actions/recipesActions";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import ReactMarkdown from "react-markdown";
 
-function CreateNote({ history }) {
+function CreateRecipe({ history }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
 
   const dispatch = useDispatch();
 
-  const noteCreate = useSelector((state) => state.noteCreate);
-  const { loading, error, note } = noteCreate;
+  const recipeCreate = useSelector((state) => state.recipeCreate);
+  const { loading, error, recipe } = recipeCreate;
 
-  console.log(note);
+  console.log(recipe);
 
   const resetHandler = () => {
     setTitle("");
@@ -27,19 +27,19 @@ function CreateNote({ history }) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createNoteAction(title, content, category));
+    dispatch(createRecipeAction(title, content, category));
     if (!title || !content || !category) return;
 
     resetHandler();
-    history.push("/mynotes");
+    history.push("/myrecipes");
   };
 
   useEffect(() => {}, []);
 
   return (
-    <MainScreen title="Create a Note">
+    <MainScreen title="Create a Recipe">
       <Card>
-        <Card.Header>Create a new Note</Card.Header>
+        <Card.Header>Create a new Recipe</Card.Header>
         <Card.Body>
           <Form onSubmit={submitHandler}>
             {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
@@ -65,7 +65,7 @@ function CreateNote({ history }) {
             </Form.Group>
             {content && (
               <Card>
-                <Card.Header>Note Preview</Card.Header>
+                <Card.Header>Recipe Preview</Card.Header>
                 <Card.Body>
                   <ReactMarkdown>{content}</ReactMarkdown>
                 </Card.Body>
@@ -83,7 +83,7 @@ function CreateNote({ history }) {
             </Form.Group>
             {loading && <Loading size={50} />}
             <Button type="submit" variant="primary">
-              Create Note
+              Create Recipe
             </Button>
             <Button className="mx-2" onClick={resetHandler} variant="danger">
               Reset Feilds
@@ -99,4 +99,4 @@ function CreateNote({ history }) {
   );
 }
 
-export default CreateNote;
+export default CreateRecipe;

@@ -1,23 +1,23 @@
 import {
-  NOTES_CREATE_FAIL,
-  NOTES_CREATE_REQUEST,
-  NOTES_CREATE_SUCCESS,
-  NOTES_DELETE_FAIL,
-  NOTES_DELETE_REQUEST,
-  NOTES_DELETE_SUCCESS,
-  NOTES_LIST_FAIL,
-  NOTES_LIST_REQUEST,
-  NOTES_LIST_SUCCESS,
-  NOTES_UPDATE_FAIL,
-  NOTES_UPDATE_REQUEST,
-  NOTES_UPDATE_SUCCESS,
-} from "../constants/notesConstants";
+  RECIPES_CREATE_FAIL,
+  RECIPES_CREATE_REQUEST,
+  RECIPES_CREATE_SUCCESS,
+  RECIPES_DELETE_FAIL,
+  RECIPES_DELETE_REQUEST,
+  RECIPES_DELETE_SUCCESS,
+  RECIPES_LIST_FAIL,
+  RECIPES_LIST_REQUEST,
+  RECIPES_LIST_SUCCESS,
+  RECIPES_UPDATE_FAIL,
+  RECIPES_UPDATE_REQUEST,
+  RECIPES_UPDATE_SUCCESS,
+} from "../constants/recipesConstants";
 import axios from "axios";
 
-export const listNotes = () => async (dispatch, getState) => {
+export const listRecipes = () => async (dispatch, getState) => {
   try {
     dispatch({
-      type: NOTES_LIST_REQUEST,
+      type: RECIPES_LIST_REQUEST,
     });
 
     const {
@@ -30,10 +30,10 @@ export const listNotes = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/notes`, config);
+    const { data } = await axios.get(`/api/recipes`, config);
 
     dispatch({
-      type: NOTES_LIST_SUCCESS,
+      type: RECIPES_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -42,19 +42,19 @@ export const listNotes = () => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     dispatch({
-      type: NOTES_LIST_FAIL,
+      type: RECIPES_LIST_FAIL,
       payload: message,
     });
   }
 };
 
-export const createNoteAction = (title, content, category) => async (
+export const createRecipeAction = (title, content, category) => async (
   dispatch,
   getState
 ) => {
   try {
     dispatch({
-      type: NOTES_CREATE_REQUEST,
+      type: RECIPES_CREATE_REQUEST,
     });
 
     const {
@@ -69,13 +69,13 @@ export const createNoteAction = (title, content, category) => async (
     };
 
     const { data } = await axios.post(
-      `/api/notes/create`,
+      `/api/recipes/create`,
       { title, content, category },
       config
     );
 
     dispatch({
-      type: NOTES_CREATE_SUCCESS,
+      type: RECIPES_CREATE_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -84,16 +84,16 @@ export const createNoteAction = (title, content, category) => async (
         ? error.response.data.message
         : error.message;
     dispatch({
-      type: NOTES_CREATE_FAIL,
+      type: RECIPES_CREATE_FAIL,
       payload: message,
     });
   }
 };
 
-export const deleteNoteAction = (id) => async (dispatch, getState) => {
+export const deleteRecipeAction = (id) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: NOTES_DELETE_REQUEST,
+      type: RECIPES_DELETE_REQUEST,
     });
 
     const {
@@ -106,10 +106,10 @@ export const deleteNoteAction = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(`/api/notes/${id}`, config);
+    const { data } = await axios.delete(`/api/recipes/${id}`, config);
 
     dispatch({
-      type: NOTES_DELETE_SUCCESS,
+      type: RECIPES_DELETE_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -118,19 +118,19 @@ export const deleteNoteAction = (id) => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     dispatch({
-      type: NOTES_DELETE_FAIL,
+      type: RECIPES_DELETE_FAIL,
       payload: message,
     });
   }
 };
 
-export const updateNoteAction = (id, title, content, category) => async (
+export const updateRecipeAction = (id, title, content, category) => async (
   dispatch,
   getState
 ) => {
   try {
     dispatch({
-      type: NOTES_UPDATE_REQUEST,
+      type: RECIPES_UPDATE_REQUEST,
     });
 
     const {
@@ -145,13 +145,13 @@ export const updateNoteAction = (id, title, content, category) => async (
     };
 
     const { data } = await axios.put(
-      `/api/notes/${id}`,
+      `/api/recipes/${id}`,
       { title, content, category },
       config
     );
 
     dispatch({
-      type: NOTES_UPDATE_SUCCESS,
+      type: RECIPES_UPDATE_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -160,7 +160,7 @@ export const updateNoteAction = (id, title, content, category) => async (
         ? error.response.data.message
         : error.message;
     dispatch({
-      type: NOTES_UPDATE_FAIL,
+      type: RECIPES_UPDATE_FAIL,
       payload: message,
     });
   }

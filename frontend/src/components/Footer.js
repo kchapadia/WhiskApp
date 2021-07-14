@@ -14,7 +14,7 @@ const Footer = () => {
     >
       <Container>
         <Row>
-          <Col className="text-center py-3">Copyright &copy; Note Zipper</Col>
+          <Col className="text-center py-3">Copyright &copy; Whisk</Col>
         </Row>
       </Container>
     </footer>
