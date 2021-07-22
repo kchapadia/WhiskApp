@@ -56,11 +56,16 @@ function MyRecipes({ history, search }) {
   };
 
   return (
-    <MainScreen title={`Welcome Back ${userInfo && userInfo.name}..`}>
+    <MainScreen title={`Welcome Back ${userInfo && userInfo.name}!`}>
       {console.log(recipes)}
       <Link to="/createrecipe">
         <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
           Create new Recipe
+        </Button>
+      </Link>
+      <Link to="/fetchrecipe">
+        <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
+          Fetch new Recipe
         </Button>
       </Link>
       {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
