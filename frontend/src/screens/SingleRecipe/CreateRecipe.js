@@ -86,7 +86,7 @@ function CreateRecipe({ history }) {
               Create Recipe
             </Button>
             <Button className="mx-2" onClick={resetHandler} variant="danger">
-              Reset Feilds
+              Reset Fields
             </Button>
           </Form>
         </Card.Body>
