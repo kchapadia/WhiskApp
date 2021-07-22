@@ -8,6 +8,7 @@ import SingleRecipe from "./screens/SingleRecipe/SingleRecipe";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen/RegisterScreen";
 import CreateRecipe from "./screens/SingleRecipe/CreateRecipe";
+import FetchRecipe from "./screens/SingleRecipe/FetchRecipe";
 import { useState } from "react";
 import ProfileScreen from "./screens/ProfileScreen/ProfileScreen";
 
@@ -29,6 +30,7 @@ function App() {
         />
         <Route path="/recipe/:id" component={SingleRecipe} />
         <Route path="/createrecipe" component={CreateRecipe} />;
+        <Route path="/fetchrecipe" component={FetchRecipe} />;
         <Route path="/profile" component={ProfileScreen} />
       </main>
       <Footer />
