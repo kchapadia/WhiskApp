@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
-
+import jwt from "jsonwebtoken";
 //@description     Auth the user
 //@route           POST /api/users/login
 //@access          Public
@@ -29,7 +29,7 @@ const authUser = asyncHandler(async (req, res) => {
 //@route           POST /api/users/
 //@access          Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, pic } = req.body;
+  const { name, email, password, pic, temporarytoken } = req.body;
 
   const userExists = await User.findOne({ email });
 
@@ -43,6 +43,10 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     pic,
+    temporarytoken: jwt.sign(req.body, "123456",
+        {
+        expiresIn: 12000
+        })
   });
 
   if (user) {
@@ -53,6 +57,8 @@ const registerUser = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
       pic: user.pic,
       token: generateToken(user._id),
+      temporarytoken: user.temporarytoken,
+      active: user.active  
     });
   } else {
     res.status(400);
@@ -90,4 +96,61 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, updateUserProfile, registerUser };
+// @desc Activate User
+// @route PUT /api/users/verify/:token
+// @access Public
+const verifyUser = asyncHandler(async(req, res) => {
+  User.findOne({temporarytoken: req.params.token}, (err, user) => 
+  {
+     if(err)
+      throw err;
+
+      const token = req.params.token;
+      console.log("the token is", token);
+
+      //Function to verify the users token
+      jwt.verify(token, "123456", (err,decoded) =>
+      {
+          if(err)
+              res.json({ success: false, message: "Activation link has expired." });
+          else if(!user)
+          {
+              res.json({ success: false, message: "Activation link has expired." });
+          }
+          else{
+              user.temporarytoken = false;
+              user.active = true;
+              // Mongoose Method to save user into database
+              user.save(err => {
+                  if(err)
+                      console.log(err);
+                  else{
+                      const emailActivate = {
+                          from: "Whisk Staff, whiskwebapp@gmail.com",
+                          to: user.email,
+                          subject: "Whisk App Account Activated",
+                          text: `Hello ${user.name}, Your account has been successfully activated!`,
+                          html: `Hello<strong> ${user.name}</strong>,<br><br>Your account has been successfully activated!`
+                          };
+                      
+                      client.sendMail(emailActivate, function(err, info)
+                      {
+                          if(err)
+                              console.log(err);
+                          else
+                          {
+                              console.log("Activation Message Confirmation - : " + info.response);
+                          }    
+                      });
+                  }    
+              });
+              res.json({
+                  succeed: true,
+                  message: "User has been successfully activated"
+                  });
+          }
+
+      });
+  });
+});
+export { authUser, updateUserProfile, registerUser, verifyUser};
