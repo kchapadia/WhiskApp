@@ -1,0 +1,52 @@
+swagger: '2.0'
+info:
+  description: |
+    This is the API documentation for COP 4331 Project Group 8.
+    
+    If you are the person who responsible for the front-end, you can see the API end points. The API documentationhas been carefully tested but, if you notice any issues please contact me in order to resolve it as soon as possible (you can press to Contact the developer in order to cantact with me).
+  version: 1.0.0
+  title: Whiskapp by group 8
+  contact:
+    email: m.aljahdhami@knights.ucf.edu
+
+paths:
+  /users/login:
+    post:
+      tags:
+      - Login
+      summary: Logs in
+      operationId: doLogin
+      description: Logs in to Whiskapp
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: loginItem
+        description: Login
+        schema:
+          $ref: '#/definitions/Login'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+definitions:
+  Login:
+    type: object
+    required:
+    - email
+    - password
+    properties:
+      email:
+        type: string
+        example: "abreijo01@gmail.com"
+      password:
+        type: string
+        example: "alex1234"
+        
+host: whiskapp.herokuapp.com
+basePath: /api
+schemes:
+- https
