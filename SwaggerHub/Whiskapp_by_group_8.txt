@@ -10,6 +10,29 @@ info:
     email: m.aljahdhami@knights.ucf.edu
 
 paths:
+  /users:
+    post:
+      tags:
+      - Users
+      summary: sign up
+      operationId: doSignup
+      description: Sign up to Whiskapp
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: signupItem
+        description: Signup
+        schema:
+          $ref: '#/definitions/Users'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+  
   /users/login:
     post:
       tags:
@@ -33,29 +56,47 @@ paths:
         404:
           description: URL Not Found
 
-  /users:
+  /users/profile:
     post:
       tags:
-      - users
-      summary: sign in
-      operationId: doSignin
-      description: Sign in to Whiskapp
+      - Profile
+      summary: update profile
+      operationId: update_Profile
+      description: update profile in to Whiskapp
       consumes:
       - application/json
       produces:
       - application/json
       parameters:
       - in: body
-        name: signItem
-        description: Signin
+        name: updateProfile
+        description: update_Profile
         schema:
-          $ref: '#/definitions/users'
+          $ref: '#/definitions/Profile'
       responses:
         200:
           description: OK
         404:
           description: URL Not Found
+
 definitions:
+  Users:
+    type: object
+    required:
+    - name
+    - email
+    - password
+    properties:
+      name:
+        type: string
+        example: "Musaab"
+      email:
+        type: string
+        example: "test@gmail.com"
+      password:
+        type: string
+        example: "Oman2021"
+  
   Login:
     type: object
     required:
@@ -68,18 +109,23 @@ definitions:
       password:
         type: string
         example: "alex1234"
-  users:
+
+  Profile:
     type: object
     required:
+    - name
     - email
     - password
     properties:
+      name:
+        type: string
+        example: "Musaab"
       email:
         type: string
-        example: "abreijo01@gmail.com"
+        example: "test@gmail.com"
       password:
         type: string
-        example: "alex1234"
+        example: "Oman2021"
         
 host: whiskapp.herokuapp.com
 basePath: /api
