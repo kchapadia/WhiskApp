@@ -9,6 +9,9 @@ import {
   USER_UPDATE_FAIL,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
+  USER_VERIFY_REQUEST,
+  USER_VERIFY_SUCCESS,
+  USER_VERIFY_FAIL,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -65,7 +68,7 @@ export const register = (name, email, password, pic) => async (dispatch) => {
 
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
 
-    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+    // dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
@@ -104,6 +107,35 @@ export const updateProfile = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const verify = (temporarytoken) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_VERIFY_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/users/verify/${temporarytoken}`,
+      config
+    );
+
+    dispatch({ type: USER_VERIFY_SUCCESS, payload: data });
+
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_VERIFY_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
