@@ -32,8 +32,43 @@ paths:
           description: OK
         404:
           description: URL Not Found
+
+  /users:
+    post:
+      tags:
+      - users
+      summary: sign in
+      operationId: doSignin
+      description: Sign in to Whiskapp
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: signItem
+        description: Signin
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
 definitions:
   Login:
+    type: object
+    required:
+    - email
+    - password
+    properties:
+      email:
+        type: string
+        example: "abreijo01@gmail.com"
+      password:
+        type: string
+        example: "alex1234"
+  users:
     type: object
     required:
     - email
