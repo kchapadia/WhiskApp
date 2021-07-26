@@ -1,7 +1,7 @@
 
 const nodemailer = require("nodemailer");
 const sgTransport = require("nodemailer-sendgrid-transport");
-const API_KEY = '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';
+const API_KEY = 'insert api key';
 const user_email = "abreijo01@gmail.com";
 const user_name = "Alexander Breijo";
 const options = {
