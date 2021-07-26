@@ -1,0 +1,10 @@
+.buttonContainer {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.activatebutton {
+  width: 200px;
+  height: 55px;
+}

@@ -2,6 +2,18 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 import jwt from "jsonwebtoken";
+import sgMail from "@sendgrid/mail";
+import nodemailer from "nodemailer";
+import sgTransport from "nodemailer-sendgrid-transport";
+
+const API_KEY =
+  "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";
+const options = {
+  auth: {
+    api_key: API_KEY,
+  },
+};
+
 //@description     Auth the user
 //@route           POST /api/users/login
 //@access          Public
@@ -43,10 +55,9 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     pic,
-    temporarytoken: jwt.sign(req.body, "123456",
-        {
-        expiresIn: 12000
-        })
+    temporarytoken: jwt.sign(req.body, "123456", {
+      expiresIn: 12000,
+    }),
   });
 
   if (user) {
@@ -58,7 +69,20 @@ const registerUser = asyncHandler(async (req, res) => {
       pic: user.pic,
       token: generateToken(user._id),
       temporarytoken: user.temporarytoken,
-      active: user.active  
+      active: user.active,
+    });
+
+    const emailActivate = {
+      from: "Whisk Staff, whiskwebapp@gmail.com",
+      to: user.email,
+      subject: "Whisk App Account Verification",
+      text: `Hello ${user.name}, Please follow the link below to activate your account`,
+      html: `Hello<strong> ${user.name}</strong>,<br><br><p>Copy the following actiavtion code and paste it into the activation field by clicking on the link below:<p><br><br>${user.temporarytoken}<br><br><a href="http://localhost:3000/verification">Click here to activate your account.</a>`,
+    };
+
+    const client = nodemailer.createTransport(sgTransport(options));
+    client.sendMail(emailActivate, function (err, info) {
+      if (err) console.log(err);
     });
   } else {
     res.status(400);
@@ -99,58 +123,49 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @desc Activate User
 // @route PUT /api/users/verify/:token
 // @access Public
-const verifyUser = asyncHandler(async(req, res) => {
-  User.findOne({temporarytoken: req.params.token}, (err, user) => 
-  {
-     if(err)
-      throw err;
+const verifyUser = asyncHandler(async (req, res) => {
+  User.findOne({ temporarytoken: req.params.token }, (err, user) => {
+    if (err) throw err;
 
-      const token = req.params.token;
-      console.log("the token is", token);
+    const token = req.params.token;
+    //console.log("the token is", token);
 
-      //Function to verify the users token
-      jwt.verify(token, "123456", (err,decoded) =>
-      {
-          if(err)
-              res.json({ success: false, message: "Activation link has expired." });
-          else if(!user)
-          {
-              res.json({ success: false, message: "Activation link has expired." });
+    //Function to verify the users token
+    jwt.verify(token, "123456", (err, decoded) => {
+      if (err)
+        res.json({ success: false, message: "Activation link has expired." });
+      else if (!user) {
+        res.json({ success: false, message: "Activation link has expired." });
+      } else {
+        user.temporarytoken = false;
+        user.active = true;
+        // Mongoose Method to save user into database
+        user.save((err) => {
+          if (err) console.log(err);
+          else {
+            const emailActivate = {
+              from: "Whisk Staff, whiskwebapp@gmail.com",
+              to: user.email,
+              subject: "Whisk App Account Activated",
+              text: `Hello ${user.name}, Your account has been successfully activated!`,
+              html: `Hello<strong> ${user.name}</strong>,<br><br>Your account has been successfully activated!`,
+            };
+
+            const client = nodemailer.createTransport(sgTransport(options));
+            client.sendMail(emailActivate, function (err, info) {
+              if (err) console.log(err);
+              else {
+                //console.log("Activation Message Confirmation - : " + info.response);
+              }
+            });
           }
-          else{
-              user.temporarytoken = false;
-              user.active = true;
-              // Mongoose Method to save user into database
-              user.save(err => {
-                  if(err)
-                      console.log(err);
-                  else{
-                      const emailActivate = {
-                          from: "Whisk Staff, whiskwebapp@gmail.com",
-                          to: user.email,
-                          subject: "Whisk App Account Activated",
-                          text: `Hello ${user.name}, Your account has been successfully activated!`,
-                          html: `Hello<strong> ${user.name}</strong>,<br><br>Your account has been successfully activated!`
-                          };
-                      
-                      client.sendMail(emailActivate, function(err, info)
-                      {
-                          if(err)
-                              console.log(err);
-                          else
-                          {
-                              console.log("Activation Message Confirmation - : " + info.response);
-                          }    
-                      });
-                  }    
-              });
-              res.json({
-                  succeed: true,
-                  message: "User has been successfully activated"
-                  });
-          }
-
-      });
+        });
+        res.json({
+          succeed: true,
+          message: "User has been successfully activated",
+        });
+      }
+    });
   });
 });
-export { authUser, updateUserProfile, registerUser, verifyUser};
+export { authUser, updateUserProfile, registerUser, verifyUser };
