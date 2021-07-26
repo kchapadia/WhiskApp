@@ -6,19 +6,25 @@
   padding-top: 10px;
 }
 .intro-text {
-  width: 100%;
+  width: 90%;
+  min-height: 100%;
   text-align: center;
+  background-color: rgba(237, 234, 208, 0.6);
+  border-radius: 15px 50px 30px;
+  margin-left: 5%;
 }
 .main {
   min-height: 93vh;
   display: flex;
   align-items: center;
-  background-image: url("../../background1.jpg");
+  justify-content: center;
+  background-image: url("../../images/landing_page.jpg");
   background-position: center;
   background-size: cover;
 }
 .buttonContainer {
   margin-top: 50px;
+  margin-bottom: 50px;
   display: flex;
   justify-content: space-evenly;
 }

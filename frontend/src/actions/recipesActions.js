@@ -48,7 +48,7 @@ export const listRecipes = () => async (dispatch, getState) => {
   }
 };
 
-export const createRecipeAction = (title, content, category) => async (
+export const createRecipeAction = (title, content, instructions, category) => async (
   dispatch,
   getState
 ) => {
@@ -70,7 +70,7 @@ export const createRecipeAction = (title, content, category) => async (
 
     const { data } = await axios.post(
       `/api/recipes/create`,
-      { title, content, category },
+      { title, content, instructions, category },
       config
     );
 
@@ -124,7 +124,7 @@ export const deleteRecipeAction = (id) => async (dispatch, getState) => {
   }
 };
 
-export const updateRecipeAction = (id, title, content, category) => async (
+export const updateRecipeAction = (id, title, content, instructions, category) => async (
   dispatch,
   getState
 ) => {
@@ -146,7 +146,7 @@ export const updateRecipeAction = (id, title, content, category) => async (
 
     const { data } = await axios.put(
       `/api/recipes/${id}`,
-      { title, content, category },
+      { title, content, instructions, category },
       config
     );
 

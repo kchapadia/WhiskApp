@@ -16,9 +16,9 @@ const getRecipeById = asyncHandler(async (req, res) => {
   const recipe = await Recipe.findById(req.params.id);
 
   if (recipe) {
-    res.json(recipe);
+    return res.json(recipe);
   } else {
-    res.status(404).json({ message: "Recipe not found" });
+    return res.status(404).json({ message: "Recipe not found" });
   }
 
   res.json(recipe);
@@ -28,14 +28,14 @@ const getRecipeById = asyncHandler(async (req, res) => {
 //@route           GET /api/recipes/create
 //@access          Private
 const CreateRecipe = asyncHandler(async (req, res) => {
-  const { title, content, category } = req.body;
+  const { title, content, instructions, category } = req.body;
 
-  if (!title || !content || !category) {
+  if (!title || !content || !instructions || !category) {
     res.status(400);
-    throw new Error("Please Fill all the feilds");
+    throw new Error("Please Fill all the fields");
     return;
   } else {
-    const recipe = new Recipe({ user: req.user._id, title, content, category });
+    const recipe = new Recipe({ user: req.user._id, title, content, instructions, category });
 
     const createdRecipe = await recipe.save();
 
@@ -67,7 +67,7 @@ const DeleteRecipe = asyncHandler(async (req, res) => {
 // @route   PUT /api/recipes/:id
 // @access  Private
 const UpdateRecipe = asyncHandler(async (req, res) => {
-  const { title, content, category } = req.body;
+  const { title, content, instructions, category } = req.body;
 
   const recipe = await Recipe.findById(req.params.id);
 
@@ -79,6 +79,7 @@ const UpdateRecipe = asyncHandler(async (req, res) => {
   if (recipe) {
     recipe.title = title;
     recipe.content = content;
+    recipe.instructions = instructions;
     recipe.category = category;
 
     const updatedRecipe = await recipe.save();

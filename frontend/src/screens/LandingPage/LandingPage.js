@@ -21,14 +21,14 @@ function LandingPage({ history }) {
           <div className="intro-text">
             <div>
               <h1 className="title">Welcome to Whisk</h1>
-              <p className="subtitle">One Safe place for all your recipes.</p>
+              <p className="subtitle">Where all your recipes are ready in a <i>Whisk</i>.</p>
             </div>
             <div className="buttonContainer">
               <Link to="/login">
                 <Button size="lg" className="landingbutton">
                   Login
                 </Button>
-              </Link>
+              </Link>  
               <Link to="/register">
                 <Button
                   variant="outline-primary"

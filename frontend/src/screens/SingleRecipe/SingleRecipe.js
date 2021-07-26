@@ -12,6 +12,7 @@ function SingleRecipe({ match, history }) {
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const [category, setCategory] = useState();
+  const [instructions, setInstructions] = useState();
   const [date, setDate] = useState("");
 
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function SingleRecipe({ match, history }) {
 
       setTitle(data.title);
       setContent(data.content);
+      setInstructions(data.instructions);
       setCategory(data.category);
       setDate(data.updatedAt);
     };
@@ -46,12 +48,13 @@ function SingleRecipe({ match, history }) {
     setTitle("");
     setCategory("");
     setContent("");
+    setInstructions("");
   };
 
   const updateHandler = (e) => {
     e.preventDefault();
-    dispatch(updateRecipeAction(match.params.id, title, content, category));
-    if (!title || !content || !category) return;
+    dispatch(updateRecipeAction(match.params.id, title, content, instructions, category));
+    if (!title || !content || !instructions || !category) return;
 
     resetHandler();
     history.push("/myrecipes");
@@ -69,7 +72,7 @@ function SingleRecipe({ match, history }) {
               <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
             )}
             <Form.Group controlId="title">
-              <Form.Label>Title</Form.Label>
+              <Form.Label>Recipe Name</Form.Label>
               <Form.Control
                 type="title"
                 placeholder="Enter the title"
@@ -79,7 +82,7 @@ function SingleRecipe({ match, history }) {
             </Form.Group>
 
             <Form.Group controlId="content">
-              <Form.Label>Content</Form.Label>
+              <Form.Label>Ingredients</Form.Label>
               <Form.Control
                 as="textarea"
                 placeholder="Enter the content"
@@ -90,13 +93,30 @@ function SingleRecipe({ match, history }) {
             </Form.Group>
             {content && (
               <Card>
-                <Card.Header>Recipe Preview</Card.Header>
+                <Card.Header>Ingredients Preview</Card.Header>
                 <Card.Body>
                   <ReactMarkdown>{content}</ReactMarkdown>
                 </Card.Body>
               </Card>
             )}
-
+            <Form.Group controlId="instructions">
+              <Form.Label>Instructions</Form.Label>
+              <Form.Control
+                as="textarea"
+                placeholder="Enter the instructions"
+                rows={4}
+                value={instructions}
+                onChange={(e) => setInstructions(e.target.value)}
+              />
+            </Form.Group>
+            {content && (
+              <Card>
+                <Card.Header>Instructions Preview</Card.Header>
+                <Card.Body>
+                  <ReactMarkdown>{instructions}</ReactMarkdown>
+                </Card.Body>
+              </Card>
+            )}
             <Form.Group controlId="content">
               <Form.Label>Category</Form.Label>
               <Form.Control
