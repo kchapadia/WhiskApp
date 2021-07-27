@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import sgMail from "@sendgrid/mail";
 import nodemailer from "nodemailer";
 import sgTransport from "nodemailer-sendgrid-transport";
-const API_KEY = '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';
+const API_KEY = 'insert api key';
 const options = {
   auth: {
       api_key: API_KEY
