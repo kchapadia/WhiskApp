@@ -5,11 +5,11 @@ const API_KEY = 'insert api key';
 sgMail.setApiKey(API_KEY)
 
 const message = {
-   to: 'abreijo01@gmail.com',
+   to: 'user.email',
    from: 'whiskwebapp@gmail.com',
-   subject: 'Hello from sendgrid',
-   text: 'Hello Beautiful',
-   html: '<h1>Hello Beautiful<h1>', 
+   subject: 'Whisk Password Reset',
+   text: 'Please click the link to reset your password \n\n <hyperlink>',
+   html: '<h1>Please click the link to reset your password \n\n <hyperlink><h1>', 
 };
 
 sgMail
