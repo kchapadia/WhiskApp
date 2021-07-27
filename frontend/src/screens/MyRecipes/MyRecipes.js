@@ -123,7 +123,10 @@ function MyRecipes({ history, search }) {
                       </Badge>
                     </h4>
                     <blockquote className="blockquote mb-0">
+                      <b>Ingredients</b>
                       <ReactMarkdown>{recipe.content}</ReactMarkdown>
+                      <b>Instructions</b>
+                      <ReactMarkdown>{recipe.instructions}</ReactMarkdown>
                       <footer className="blockquote-footer">
                         Created on{" "}
                         <cite title="Source Title">
