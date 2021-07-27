@@ -90,6 +90,46 @@ paths:
         description: update_Profile
         schema:
           $ref: '#/definitions/Profile'
+  
+  /recipes/create:
+    post:
+      tags:
+      - Recipes-create 
+      summary: creating recipes 
+      operationId: creating_recipes
+      description: create recipes
+      security:
+        - Bearerpost: []
+      responses:
+        '200':
+          description: 'Will send `Authenticated`'
+        '403': 
+          description: 'You do not have necessary permissions for the resource'
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: creatingRecipes
+        description: creating_recipes
+        schema:
+          $ref: '#/definitions/create'
+  
+  /recipes:
+    get:
+      tags:
+      - Recipes
+      summary: update profile
+      operationId: update_Profile1
+      description: update profile in to Whiskapp
+      security:
+        - Bearerget: []
+      responses:
+        '200':
+          description: 'Will send `Authenticated`'
+        '403': 
+          description: 'You do not have necessary permissions for the resource'
 
 definitions:
   Users:
@@ -123,6 +163,23 @@ definitions:
         example: "alex1234"
 
   Profile:
+    type: object
+    required:
+    - name
+    - email
+    - password
+    properties:
+      name:
+        type: string
+        example: "Musaab"
+      email:
+        type: string
+        example: "test@gmail.com"
+      password:
+        type: string
+        example: "Oman2021"
+
+  create:
     type: object
     required:
     - name
