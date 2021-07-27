@@ -86,7 +86,11 @@ function RegisterScreen({ history }) {
             <div className="loginContainer">
               {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
               {message && <ErrorMessage variant="danger">{message}</ErrorMessage>}
+              {notification && (
+                <Notification variant="info">{notification}</Notification>
+              )}
               {loading && <Loading />}
+
               <Form onSubmit={submitHandler}>
                 <Form.Group controlId="name">
                   <Form.Label>Name</Form.Label>
