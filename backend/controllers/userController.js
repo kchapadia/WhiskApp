@@ -11,6 +11,8 @@ const options = {
       api_key: API_KEY
       }
   };
+
+ 
 //@description     Auth the user
 //@route           POST /api/users/login
 //@access          Public
@@ -58,12 +60,13 @@ const registerUser = asyncHandler(async (req, res) => {
         })
   });
   // Send verification email
+  var temp_token = user.temporarytoken;
   const emailActivate = {
     from: "Whisk Staff, whiskwebapp@gmail.com",
     to: user.email,
     subject: "Whisk App Verify Account",
     text: `Hello ${user.name}, Please activate your account using the follow link \n\n localhost:3000/api/users/verify/${user.temporarytoken} `,
-    html: `<a href="http://localhost:3000/api/users/verify/"+ ${user.temporarytoken} >Click link to activate</a>`
+    html: "<a href=`http://localhost:3000/api/users/verify/" + `${user.temporarytoken}` + "`>Click link to activate</a>"
     };
     const client = nodemailer.createTransport(sgTransport(options));
     client.sendMail(emailActivate, function(err, info)
