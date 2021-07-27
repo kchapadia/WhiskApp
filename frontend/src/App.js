@@ -11,6 +11,7 @@ import CreateRecipe from "./screens/SingleRecipe/CreateRecipe";
 import FetchRecipe from "./screens/SingleRecipe/FetchRecipe";
 import { useState } from "react";
 import ProfileScreen from "./screens/ProfileScreen/ProfileScreen";
+import VerificationScreen from "./screens/VerificationScreen/VerificationScreen";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" component={LandingPage} exact />
         <Route path="/login" component={LoginScreen} />
         <Route path="/register" component={RegisterScreen} />
+        <Route path="/verification" component={VerificationScreen} />
         <Route
           path="/myrecipes"
           component={({ history }) => (

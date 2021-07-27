@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
+import Notification from "../../components/Notification";
 import { register } from "../../actions/userActions";
 import MainScreen from "../../components/MainScreen";
 import "./RegisterScreen.css";
@@ -17,6 +18,7 @@ function RegisterScreen({ history }) {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
+  const [notification, setNotification] = useState(null);
   const [picMessage, setPicMessage] = useState(null);
 
   const dispatch = useDispatch();
@@ -55,7 +57,11 @@ function RegisterScreen({ history }) {
 
   useEffect(() => {
     if (userInfo) {
-      history.push("/");
+      setNotification(
+        "Verification email has been sent to " +
+          userInfo.email +
+          ". Please follow the instructions to activate your account."
+      );
     }
   }, [history, userInfo]);
 
@@ -72,6 +78,9 @@ function RegisterScreen({ history }) {
       <div className="loginContainer">
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {message && <ErrorMessage variant="danger">{message}</ErrorMessage>}
+        {notification && (
+          <Notification variant="info">{notification}</Notification>
+        )}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name">
