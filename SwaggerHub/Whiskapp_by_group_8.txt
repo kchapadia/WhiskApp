@@ -9,6 +9,16 @@ info:
   contact:
     email: m.aljahdhami@knights.ucf.edu
 
+securityDefinitions:
+  Bearerpost:
+    type: apiKey
+    name: AuthorizationForPost
+    in: header
+  Bearerget:
+    type: apiKey
+    name: Authorization 
+    in: query
+
 paths:
   /users:
     post:
@@ -63,6 +73,13 @@ paths:
       summary: update profile
       operationId: update_Profile
       description: update profile in to Whiskapp
+      security:
+        - Bearerpost: []
+      responses:
+        '200':
+          description: 'Will send `Authenticated`'
+        '403': 
+          description: 'You do not have necessary permissions for the resource'
       consumes:
       - application/json
       produces:
@@ -73,11 +90,6 @@ paths:
         description: update_Profile
         schema:
           $ref: '#/definitions/Profile'
-      responses:
-        200:
-          description: OK
-        404:
-          description: URL Not Found
 
 definitions:
   Users:
