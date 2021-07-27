@@ -11,6 +11,7 @@ function CreateRecipe({ history }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
+  const [instructions, setInstructions] = useState("");
 
   const dispatch = useDispatch();
 
@@ -23,12 +24,13 @@ function CreateRecipe({ history }) {
     setTitle("");
     setCategory("");
     setContent("");
+    setInstructions("");
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createRecipeAction(title, content, category));
-    if (!title || !content || !category) return;
+    dispatch(createRecipeAction(title, content, instructions, category));
+    if (!title || !content || !instructions || !category) return;
 
     resetHandler();
     history.push("/myrecipes");
@@ -44,7 +46,7 @@ function CreateRecipe({ history }) {
           <Form onSubmit={submitHandler}>
             {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
             <Form.Group controlId="title">
-              <Form.Label>Title</Form.Label>
+              <Form.Label>Recipe Name</Form.Label>
               <Form.Control
                 type="title"
                 value={title}
@@ -54,7 +56,7 @@ function CreateRecipe({ history }) {
             </Form.Group>
 
             <Form.Group controlId="content">
-              <Form.Label>Content</Form.Label>
+              <Form.Label>Ingredients</Form.Label>
               <Form.Control
                 as="textarea"
                 value={content}
@@ -68,6 +70,25 @@ function CreateRecipe({ history }) {
                 <Card.Header>Recipe Preview</Card.Header>
                 <Card.Body>
                   <ReactMarkdown>{content}</ReactMarkdown>
+                </Card.Body>
+              </Card>
+            )}
+
+            <Form.Group controlId="instructions">
+              <Form.Label>Instructions</Form.Label>
+              <Form.Control
+                as="textarea"
+                placeholder="Enter the content"
+                value={instructions}
+                rows={4}
+                onChange={(e) => setInstructions(e.target.value)}
+              />
+            </Form.Group>
+            {content && (
+              <Card>
+                <Card.Header>Instructions Preview</Card.Header>
+                <Card.Body>
+                  <ReactMarkdown>{instructions}</ReactMarkdown>
                 </Card.Body>
               </Card>
             )}

@@ -28,7 +28,7 @@ function LandingPage({ history }) {
                 <Button size="lg" className="landingbutton">
                   Login
                 </Button>
-              </Link>
+              </Link>  
               <Link to="/register">
                 <Button
                   variant="outline-primary"
