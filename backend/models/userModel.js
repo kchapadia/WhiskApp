@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema(
     },
    temporarytoken: {
       type: String,
-      required: true,
+      required: false,
     },
     active: {
       type: Boolean,
