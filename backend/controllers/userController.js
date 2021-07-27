@@ -65,7 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
     from: "Whisk Staff, whiskwebapp@gmail.com",
     to: user.email,
     subject: "Whisk App Verify Account",
-    html: `Hello<strong> ${user.name}</strong>,<br><br><p>Copy the following actiavtion code and paste it into the activation field by clicking on the link below:<p><br><br>${user.temporarytoken}<br><br><a href="http://localhost:3000/verification">Click here to activate your account.</a>`
+    html: `Hello<strong> ${user.name}</strong>,<br><br><p>Copy the following actiavtion code and paste it into the activation field by clicking on the link below:<p><br><br>${user.temporarytoken}<br><br><a href="http://whiskapp.herokuapp.com:3000/verification">Click here to activate your account.</a>`
     };
     const client = nodemailer.createTransport(sgTransport(options));
     client.sendMail(emailActivate, function(err, info)
