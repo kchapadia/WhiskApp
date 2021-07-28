@@ -1,6 +1,12 @@
 import Recipe from "../models/recipeModel.js";
 import asyncHandler from "express-async-handler";
 
+
+import { fetchTitle } from "./scrape.js";
+import { fetchContent } from "./scrape.js";
+import { fetchCategory } from "./scrape.js";
+
+
 // @desc    Get logged in user recipes
 // @route   GET /api/recipes
 // @access  Private
@@ -42,6 +48,32 @@ const CreateRecipe = asyncHandler(async (req, res) => {
     res.status(201).json(createdRecipe);
   }
 });
+
+
+//@description     Fetch URL for a single recipe
+//@route           GET /api/recipes/fetch
+//@Access          Private
+const FetchRecipe = asyncHandler(async (req, res) => {
+
+  const {link } = req.body;
+
+  //Webscraping  goes here 
+
+   const title = fetchTitle(link);
+   const content = fetchContent(link);
+   const category = fetchCategory(link);
+
+  //Webscraping Ends 
+  
+  //send recipe to mongoose schema and then upload
+  const urlRecipe = new Recipe({ user: req.user._id, title, content, category});
+ 
+  const recipeURL = await urlRecipe.save();
+
+  res.status(201).json(recipeURL);
+  
+});
+
 
 //@description     Delete single Recipe
 //@route           GET /api/recipes/:id
