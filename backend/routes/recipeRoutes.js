@@ -16,5 +16,5 @@ router
   .delete(protect, DeleteRecipe)
   .put(protect, UpdateRecipe);
 router.route("/create").post(protect, CreateRecipe);
-
+router.route("/fetch").post(protect, FetchRecipe);
 export default router;
