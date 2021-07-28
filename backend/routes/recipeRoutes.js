@@ -5,6 +5,7 @@ import {
   CreateRecipe,
   DeleteRecipe,
   UpdateRecipe,
+  FetchRecipe,
 } from "../controllers/recipeController.js";
 const router = express.Router();
 import { protect } from "../middleware/authMiddleware.js";
