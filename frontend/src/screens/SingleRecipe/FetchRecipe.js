@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MainScreen from "../../components/MainScreen";
 import { Button, Card, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { createRecipeAction } from "../../actions/recipesActions";
+//import { createRecipeAction } from "../../actions/recipesActions";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import { postFetchLinkData } from "../../actions/recipesActions";
@@ -39,10 +39,10 @@ function FetchRecipe({ history }) {
         <Card.Body>
           <Form onSubmit={submitHandler}>
             {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-            <Form.Group controlId="content">
+            <Form.Group controlId="link">
               <Form.Label>Recipe Link</Form.Label>
               <Form.Control
-                type="content"
+                type="link"
                 value={link}
                 placeholder="Enter the Link"
                 onChange={(e) => setLink(e.target.value)}
