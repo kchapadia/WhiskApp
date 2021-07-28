@@ -122,4 +122,4 @@ const UpdateRecipe = asyncHandler(async (req, res) => {
   }
 });
 
-export { getRecipeById, getRecipes, CreateRecipe, DeleteRecipe, UpdateRecipe };
+export { getRecipeById, getRecipes, CreateRecipe, DeleteRecipe, UpdateRecipe,FetchRecipe };
