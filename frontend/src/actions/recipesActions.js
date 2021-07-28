@@ -90,6 +90,53 @@ export const createRecipeAction = (title, content, instructions, category) => as
   }
 };
 
+
+//New action to fetch data and post it
+export const postFetchLinkData = (link) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({
+      type: RECIPES_CREATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+ 
+    
+    const { data } = await axios.post(
+      //double confirm its fetch;
+      `/api/recipes/fetch`,
+      { link },
+      config
+    );
+
+    dispatch({
+      type: RECIPES_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: RECIPES_CREATE_FAIL,
+      payload: message,
+    });
+  }
+};
+
+
 export const deleteRecipeAction = (id) => async (dispatch, getState) => {
   try {
     dispatch({
