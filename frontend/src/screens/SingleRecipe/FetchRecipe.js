@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createRecipeAction } from "../../actions/recipesActions";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
+import { postFetchLinkData } from "../../actions/recipesActions";
 
 function FetchRecipe({ history }) {
   const [link, setLink] = useState("");
@@ -22,7 +23,7 @@ function FetchRecipe({ history }) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createRecipeAction(link));
+    dispatch(postFetchLinkData(link));
     if (!link) return;
 
     resetHandler();
