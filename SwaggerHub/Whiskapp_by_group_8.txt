@@ -9,16 +9,6 @@ info:
   contact:
     email: m.aljahdhami@knights.ucf.edu
 
-securityDefinitions:
-  Bearerpost:
-    type: apiKey
-    name: AuthorizationForPost
-    in: header
-  Bearerget:
-    type: apiKey
-    name: Authorization 
-    in: header
-
 paths:
   /users:
     post:
@@ -74,7 +64,7 @@ paths:
       operationId: update_Profile
       description: update profile in to Whiskapp
       security:
-        - Bearerpost: []
+        - Bearer: []
       responses:
         '200':
           description: 'Will send `Authenticated`'
@@ -94,12 +84,12 @@ paths:
   /recipes/create:
     post:
       tags:
-      - Recipes-create 
+      - Create recipes  
       summary: creating recipes 
       operationId: creating_recipes
       description: create recipes
       security:
-        - Bearerpost: []
+        - Bearer: []
       responses:
         '200':
           description: 'Will send `Authenticated`'
@@ -119,12 +109,12 @@ paths:
   /recipes:
     get:
       tags:
-      - Recipes
-      summary: update profile
-      operationId: update_Profile1
-      description: update profile in to Whiskapp
+      - Show recipes
+      summary: Show recipes
+      operationId: Show_recipes
+      description: Show recipes
       security:
-        - Bearerget: []
+        - Bearer: []
       responses:
         '200':
           description: 'Will send `Authenticated`'
@@ -133,17 +123,16 @@ paths:
   /recipes/{id}:
     get:
       tags:
-      - Recipe by ID
+      - Find recipe by ID
       summary: Find Recipes by ID
       description: Returns recipes
-      operationId: getPetById
+      operationId: getRecipeById
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: id
         in: path
-        description: ID of pet to return
+        description: ID of recipe to return
         required: true
         type: string
       responses:
@@ -154,6 +143,57 @@ paths:
           description: Invalid ID supplied
         404:
           description: ID not found
+    put:
+      tags:
+      - Update recipe by ID
+      summary: Updated recipe
+      description: This can only be done by the logged in user.
+      operationId: updaterecipe
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: recipe id that need to be updated
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Updated user object
+        required: true
+        schema:
+          $ref: '#/definitions/updateRecipebyID'
+
+      security:
+        - Bearer: []
+      responses:
+        400:
+          description: Invalid user supplied
+        404:
+          description: User not found
+    
+    delete:
+      tags:
+      - Delete recipe by ID
+      summary: Delete recipe
+      description: This can only be done by the logged in user.
+      operationId: deleteRecipe
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        description: The recipe that needs to be deleted
+        required: true
+        type: string
+      security:
+        - Bearer: []      
+      responses:
+        400:
+          description: Invalid username supplied
+        404:
+          description: User not found
 
   
 definitions:
@@ -182,10 +222,10 @@ definitions:
     properties:
       email:
         type: string
-        example: "abreijo01@gmail.com"
+        example: "testendpoint@mozej.com"
       password:
         type: string
-        example: "alex1234"
+        example: "Oman2020"
 
   Profile:
     type: object
@@ -196,31 +236,61 @@ definitions:
     properties:
       name:
         type: string
-        example: "Musaab"
+        example: "Mohammed Azzan"
       email:
         type: string
-        example: "test@gmail.com"
+        example: "testendpoint@mozej.com"
       password:
         type: string
-        example: "Oman2021"
+        example: "Oman2020"
 
   create:
     type: object
     required:
-    - name
-    - email
-    - password
+    - title
+    - content
+    - instructions
+    - category
     properties:
-      name:
+      title:
         type: string
-        example: "Musaab"
-      email:
+        example: "cake2"
+      content:
         type: string
-        example: "test@gmail.com"
-      password:
+        example: "175g (6oz) margarine or softened butter\n175g (6oz) caster sugar\n3 large eggs\n175g (6oz) self-raising flour, sifted\n1tsp baking powder\n1tsp vanilla extract\npinch of salt"
+      instructions:
         type: string
-        example: "Oman2021"
-        
+        example: "Heat the oven to 180°C (gas mark 4). Lightly grease an 18cm (7in) round cake tin with a little extra butter or margarine and cut a piece of greaseproof paper or non-stick baking parchment to fit the base of the tin.\nPut all the ingredients into a large mixing bowl and beat with a wooden spoon or a hand-held mixer for 1 minute, or until just combined. It's important not to beat the batter too much - just long enough to make it smooth.\nPour or spoon the mixture into the tin, smooth the top and bake on the middle shelf of the oven for about 45-50 minutes. The cake is cooked when it looks well risen and golden; the top should spring back when lightly touched with a fingertip. Another test is to insert a skewer into the centre of the cake - it should come out clean.\nLet the cake sit in the tin for 5 minutes, then gently run a knife around the edge and turn it out onto a wire rack to cool. Serve dusted with icing sugar."
+      category:
+        type: string
+        example: "sweet"
+  
+  updateRecipebyID:
+    type: object
+    required:
+    - title
+    - content
+    - instructions
+    - category
+    properties:
+      title:
+        type: string
+        example: "cake2"
+      content:
+        type: string
+        example: "175g (6oz) margarine or softened butter\n175g (6oz) caster sugar\n3 large eggs\n175g (6oz) self-raising flour, sifted\n1tsp baking powder\n1tsp vanilla extract\npinch of salt"
+      instructions:
+        type: string
+        example: "Heat the oven to 180°C (gas mark 4). Lightly grease an 18cm (7in) round cake tin with a little extra butter or margarine and cut a piece of greaseproof paper or non-stick baking parchment to fit the base of the tin.\nPut all the ingredients into a large mixing bowl and beat with a wooden spoon or a hand-held mixer for 1 minute, or until just combined. It's important not to beat the batter too much - just long enough to make it smooth.\nPour or spoon the mixture into the tin, smooth the top and bake on the middle shelf of the oven for about 45-50 minutes. The cake is cooked when it looks well risen and golden; the top should spring back when lightly touched with a fingertip. Another test is to insert a skewer into the centre of the cake - it should come out clean.\nLet the cake sit in the tin for 5 minutes, then gently run a knife around the edge and turn it out onto a wire rack to cool. Serve dusted with icing sugar."
+      category:
+        type: string
+        example: "sweet"
+  
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization 
+    in: header      
 
         
 host: whiskapp.herokuapp.com
