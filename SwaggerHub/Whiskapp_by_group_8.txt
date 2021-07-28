@@ -17,7 +17,7 @@ securityDefinitions:
   Bearerget:
     type: apiKey
     name: Authorization 
-    in: query
+    in: header
 
 paths:
   /users:
@@ -130,7 +130,32 @@ paths:
           description: 'Will send `Authenticated`'
         '403': 
           description: 'You do not have necessary permissions for the resource'
+  /recipes/{id}:
+    get:
+      tags:
+      - Recipe by ID
+      summary: Find Recipes by ID
+      description: Returns recipes
+      operationId: getPetById
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        description: ID of pet to return
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
 
+        400:
+          description: Invalid ID supplied
+        404:
+          description: ID not found
+
+  
 definitions:
   Users:
     type: object
@@ -195,6 +220,8 @@ definitions:
       password:
         type: string
         example: "Oman2021"
+        
+
         
 host: whiskapp.herokuapp.com
 basePath: /api
