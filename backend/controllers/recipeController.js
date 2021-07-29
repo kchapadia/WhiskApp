@@ -65,7 +65,15 @@ const recipeData = {};
    
   const {link } = req.body;
 
-    let browser = await puppeteer.launch();
+    let browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--single-process'
+      ],
+    });
     let page = await browser.newPage();
 
     await page.goto(link, {waitUntil: 'domcontentloaded'});
