@@ -12,6 +12,12 @@ import {
   USER_VERIFY_REQUEST,
   USER_VERIFY_SUCCESS,
   USER_VERIFY_FAIL,
+  USER_EMAIL_REQUEST,
+  USER_EMAIL_SUCCESS,
+  USER_EMAIL_FAIL,
+  USER_RESET_REQUEST,
+  USER_RESET_SUCCESS,
+  USER_RESET_FAIL,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -143,3 +149,64 @@ export const verify = (temporarytoken) => async (dispatch) => {
     });
   }
 };
+
+export const resetEmailP = (email) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_EMAIL_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type" : "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/users/sendForgotEmail`,
+      { email },
+      config
+    );
+    
+    dispatch ({ type: USER_EMAIL_SUCCESS, payload: data });
+
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_EMAIL_FAIL,
+      payload:
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message,
+    });
+  }
+};
+
+export const reset = (temporarytoken, newpassword, confirmpassword) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_RESET_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type" : "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/users/forgotPassword/${temporarytoken}`,
+      {newpassword, confirmpassword},
+      config
+    );
+    
+    dispatch ({ type: USER_RESET_SUCCESS, payload: data });
+
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_RESET_FAIL,
+      payload:
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message,
+    });
+  }
+};
+
