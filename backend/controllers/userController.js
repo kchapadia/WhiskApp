@@ -261,7 +261,7 @@ const sendForgotEmail = asyncHandler(async (req, res) => {
       from: 'whiskwebapp@gmail.com',
       subject: 'Whisk Password Reset',
       //text: `Please click the link to reset your password \n\n ${user.temporarytoken}`,
-      html: `Hello<strong> ${user.name}</strong>,<br><br><p>Copy the following reset code and paste it into the reset field by clicking on the link below:<p><br><br>${user.temporarytoken}<br><br><br><p><a href="http://localhost:300/reset">Click here to reset your password.</a>`, 
+      html: `Hello<strong> ${user.name}</strong>,<br><br><p>Copy the following reset code and paste it into the reset field by clicking on the link below:<p><br><br>${user.temporarytoken}<br><br><br><p><a href="http://whiskapp.herokuapp.com/reset">Click here to reset your password.</a>`, 
     };
 
     sgMail
