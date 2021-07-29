@@ -12,6 +12,9 @@ import {
   USER_VERIFY_REQUEST,
   USER_VERIFY_SUCCESS,
   USER_VERIFY_FAIL,
+  USER_RESET_REQUEST,
+  USER_RESET_SUCCESS,
+  USER_RESET_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -63,6 +66,19 @@ export const userVerifyReducer = (state = {}, action) => {
       return { loading: false, userInfo: action.payload, success: true };
     case USER_VERIFY_FAIL:
       return { loading: false, error: action.payload, success: false };
+    default:
+      return state;
+  }
+};
+
+export const userResetReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_RESET_REQUEST:
+      return { loading: true };
+    case USER_RESET_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case USER_RESET_FAIL:
+      return { loading: false, error: action.payload};
     default:
       return state;
   }
