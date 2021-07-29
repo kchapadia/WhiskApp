@@ -19,7 +19,7 @@ function ResetScreen({ history }) {
 
   useEffect(() => {
     if (userInfo) {
-      history.push("/login");
+      history.push("/myrecipes");
     }
   }, [history, userInfo]);
 
