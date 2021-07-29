@@ -1,5 +1,6 @@
 import Recipe from "../models/recipeModel.js";
 import asyncHandler from "express-async-handler";
+import puppeteer from 'puppeteer';
 
 
 import { fetchTitle } from "./scrape.js";
@@ -55,22 +56,49 @@ const CreateRecipe = asyncHandler(async (req, res) => {
 //@Access          Private
 const FetchRecipe = asyncHandler(async (req, res) => {
 
-  const {link } = req.body;
 
   //Webscraping  goes here 
+const recipeData = {};
 
-   const title = fetchTitle(link);
-   const content = fetchContent(link);
-   const category = fetchCategory(link);
+(async () => {
 
-  //Webscraping Ends 
-  
-  //send recipe to mongoose schema and then upload
-  const urlRecipe = new Recipe({ user: req.user._id, title, content, category});
+   
+  const {link } = req.body;
+
+    let browser = await puppeteer.launch();
+    let page = await browser.newPage();
+
+    await page.goto(link, {waitUntil: 'networkidle2'});
+
+    let title = await page.evaluate(() => {
+
+        return document.querySelector('div[class="headline-wrapper"] > h1').innerText;
+    })
+    let content = await page.evaluate(() => {
+
+      return document.querySelector('ul[class="ingredients-section"]').innerText;
+  })
+  let instructions = await page.evaluate(() => {
+
+    return document.querySelector('ul[class="instructions-section"]').innerText;
+})
+let category = await page.evaluate(() => {
+
+  return document.querySelector('div[class="partial recipe-nutrition-section"]').innerText;
+})
+
+    recipeData.title = title;
+    recipeData.content = content;
+    recipeData.instructions = instructions;
+    recipeData.category = category;
+    recipeData.user = req.user._id;
+
+    const urlRecipe = new Recipe(recipeData);
+    const recipeSend = await urlRecipe.save();
+    res.status(201).json(recipeSend);
+
+})();
  
-  const recipeURL = await urlRecipe.save();
-
-  res.status(201).json(recipeURL);
   
 });
 
