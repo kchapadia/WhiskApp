@@ -68,7 +68,7 @@ const recipeData = {};
     let browser = await puppeteer.launch();
     let page = await browser.newPage();
 
-    await page.goto(link, {waitUntil: 'networkidle2'});
+    await page.goto(link, {waitUntil: 'domcontentloaded'});
 
     let title = await page.evaluate(() => {
 
