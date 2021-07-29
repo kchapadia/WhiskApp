@@ -11,6 +11,11 @@ import {
   userLoginReducer,
   userRegisterReducer,
   userUpdateReducer,
+<<<<<<< Updated upstream
+=======
+  userVerifyReducer,
+  userResetReducer,
+>>>>>>> Stashed changes
 } from "./reducers/userReducers";
 
 const reducer = combineReducers({
@@ -21,6 +26,11 @@ const reducer = combineReducers({
   recipeDelete: recipeDeleteReducer,
   recipeUpdate: recipeUpdateReducer,
   userUpdate: userUpdateReducer,
+<<<<<<< Updated upstream
+=======
+  userVerify: userVerifyReducer,
+  userReset: userResetReducer,
+>>>>>>> Stashed changes
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

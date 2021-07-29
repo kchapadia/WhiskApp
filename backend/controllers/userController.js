@@ -90,4 +90,170 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+<<<<<<< Updated upstream
 export { authUser, updateUserProfile, registerUser };
+=======
+// @desc Activate User
+// @route PUT /api/users/verify/:token
+// @access Public
+const verifyUser = asyncHandler(async(req, res) => {
+  User.findOne({temporarytoken: req.params.token}, (err, user) => 
+  {
+     if(err)
+      throw err;
+
+      const token = req.params.token;
+      console.log("the token is", token);
+
+      //Function to verify the users token
+      jwt.verify(token, "123456", (err,decoded) =>
+      {
+          if(err)
+              res.json({ success: false, message: "Activation link has expired." });
+          else if(!user)
+          {
+              res.json({ success: false, message: "Activation link has expired." });
+          }
+          else{
+              user.temporarytoken = false;
+              user.active = true;
+              // Mongoose Method to save user into database
+              user.save(err => {
+                  if(err)
+                      console.log(err);
+                  else{
+                      const emailActivate = {
+                          from: "Whisk Staff, whiskwebapp@gmail.com",
+                          to: user.email,
+                          subject: "Whisk App Account Activated",
+                          text: `Hello ${user.name}, Your account has been successfully activated!`,
+                          html: `Hello<strong> ${user.name}</strong>,<br><br>Your account has been successfully activated!`
+                          };
+                      const client = nodemailer.createTransport(sgTransport(options));
+                      client.sendMail(emailActivate, function(err, info)
+                      {
+                          if(err)
+                              console.log(err);
+                          else
+                          {
+                              console.log("Activation Message Confirmation - : " + info.response);
+                          }    
+                      });
+                  }    
+              });
+              res.json({
+                  succeed: true,
+                  message: "User has been successfully activated"
+                  });
+          }
+
+      });
+  });
+});
+
+// @desc Change the forgotten password
+// @route /api/users/forgotPassword/:token
+// @access Public
+const forgotUserPassword = asyncHandler(async (req, res) => {
+  const { newpassword, confirmpassword } = req.body;
+  User.findOne({temporarytoken: req.params.token}, (err, user) => 
+  {
+    if(err)
+      throw err;
+
+      const token = req.params.token;
+      console.log("the token is", token);
+
+      jwt.verify(token, "123456", (err,decoded) =>
+      {
+          if(err)
+              res.json({ success: false, message: "Activation link has expired. Gaming" });
+          else if(!user)
+          {
+              res.json({ success: false, message: "Activation link has expired. Not gamer" });
+          }
+          else
+          {
+            // Check to see if the new password and confirmation password are the same
+            if(req.body.newpassword === req.body.confirmpassword)
+            {
+             user.password = req.body.newpassword;
+             user.temporarytoken = false;
+
+            const updatedUser = user.save();
+    
+              res.json({
+              _id: updatedUser._id,
+              name: updatedUser.name,
+              email: updatedUser.email,
+              pic: updatedUser.pic,
+              isAdmin: updatedUser.isAdmin,
+              token: generateToken(updatedUser._id),
+              succeed: true,
+              message: "User has reset their password"
+              });
+            }
+            else
+            {
+              res.status(401);
+              throw new Error("Passwords do not match");
+            }        
+          }        
+        });
+  
+});
+});
+
+// @desc Send forgot email to user
+// @route /api/users/sendForgotEmail
+// @access Public
+const sendForgotEmail = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  // Check if email is in database
+  const user = await User.findOne({ email });
+  if(user)
+  {
+    // Give a new temp token
+    user.temporarytoken = jwt.sign(req.body, "123456",
+    {
+    expiresIn: 12000
+    });
+    const updatedUser = user.save();
+    
+    //const sgMail = require('@sendgrid/mail')
+    
+    sgMail.setApiKey(API_KEY)
+
+    const message = {
+      to: user.email,
+      from: 'whiskwebapp@gmail.com',
+      subject: 'Whisk Password Reset',
+      //text: `Please click the link to reset your password \n\n ${user.temporarytoken}`,
+      html: `Hello<strong> ${user.name}</strong>,<br><br><p>Copy the following reset code and paste it into the reset field by clicking on the link below:<p><br><br>${user.temporarytoken}<br><br><br><p><a href="localhost:300/reset">Click here to reset your password.</a>`, 
+    };
+
+    sgMail
+        .send(message)
+        .then((response) => console.log('Email sent...'))
+        .catch((error) => console.log(error.message));
+
+        res.json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          pic: user.pic,
+          isAdmin: user.isAdmin,
+          token: generateToken(user._id),
+          temporarytoken: user.temporarytoken,
+          active: user.active
+          });
+  }
+  else
+  {
+    res.status(404);
+    throw new Error("User Not Found");
+  }
+});
+
+export { authUser, updateUserProfile, registerUser, verifyUser, forgotUserPassword, sendForgotEmail};
+>>>>>>> Stashed changes

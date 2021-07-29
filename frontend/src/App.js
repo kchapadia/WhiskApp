@@ -11,6 +11,11 @@ import CreateRecipe from "./screens/SingleRecipe/CreateRecipe";
 import FetchRecipe from "./screens/SingleRecipe/FetchRecipe";
 import { useState } from "react";
 import ProfileScreen from "./screens/ProfileScreen/ProfileScreen";
+<<<<<<< Updated upstream
+=======
+import VerificationScreen from "./screens/VerificationScreen/VerificationScreen";
+import ResetScreen from "./screens/ResetScreen/ResetScreen";
+>>>>>>> Stashed changes
 
 function App() {
   const [search, setSearch] = useState("");
@@ -22,6 +27,11 @@ function App() {
         <Route path="/" component={LandingPage} exact />
         <Route path="/login" component={LoginScreen} />
         <Route path="/register" component={RegisterScreen} />
+<<<<<<< Updated upstream
+=======
+        <Route path="/verification" component={VerificationScreen} />
+        <Route path="/reset" component={ResetScreen} />
+>>>>>>> Stashed changes
         <Route
           path="/myrecipes"
           component={({ history }) => (
