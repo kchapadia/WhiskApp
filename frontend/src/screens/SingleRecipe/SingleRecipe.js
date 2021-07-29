@@ -85,7 +85,7 @@ function SingleRecipe({ match, history }) {
               <Form.Label>Ingredients</Form.Label>
               <Form.Control
                 as="textarea"
-                placeholder="Enter the content"
+                placeholder="Enter the Ingredients"
                 rows={4}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -103,7 +103,7 @@ function SingleRecipe({ match, history }) {
               <Form.Label>Instructions</Form.Label>
               <Form.Control
                 as="textarea"
-                placeholder="Enter the instructions"
+                placeholder="Enter the Instructions"
                 rows={4}
                 value={instructions}
                 onChange={(e) => setInstructions(e.target.value)}
@@ -121,7 +121,7 @@ function SingleRecipe({ match, history }) {
               <Form.Label>Category</Form.Label>
               <Form.Control
                 type="content"
-                placeholder="Enter the Category"
+                placeholder="Enter the Nutrition Facts"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               />

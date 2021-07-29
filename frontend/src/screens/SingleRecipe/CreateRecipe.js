@@ -60,7 +60,7 @@ function CreateRecipe({ history }) {
               <Form.Control
                 as="textarea"
                 value={content}
-                placeholder="Enter the content"
+                placeholder="Enter the Ingredients"
                 rows={4}
                 onChange={(e) => setContent(e.target.value)}
               />
@@ -78,7 +78,7 @@ function CreateRecipe({ history }) {
               <Form.Label>Instructions</Form.Label>
               <Form.Control
                 as="textarea"
-                placeholder="Enter the content"
+                placeholder="Enter the instructions"
                 value={instructions}
                 rows={4}
                 onChange={(e) => setInstructions(e.target.value)}
@@ -98,7 +98,7 @@ function CreateRecipe({ history }) {
               <Form.Control
                 type="content"
                 value={category}
-                placeholder="Enter the Category"
+                placeholder="Enter the Nutrition Facts"
                 onChange={(e) => setCategory(e.target.value)}
               />
             </Form.Group>
